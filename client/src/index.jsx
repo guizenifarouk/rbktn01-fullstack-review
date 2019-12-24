@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import $ from 'jquery';
 import Search from './components/Search.jsx';
 import RepoList from './components/RepoList.jsx';
@@ -10,12 +11,25 @@ class App extends React.Component {
     this.state = { 
       repos: []
     }
-
   }
 
   search (term) {
+
     console.log(`${term} was searched`);
-    // TODO
+    var that = this;
+   // post request
+    $.ajax({
+      type: "POST",
+      url: '/repos',
+      contentType: "application/json",
+      data: JSON.stringify({username: term}),
+      success: function(result) {
+        console.log('this = ', result);
+        that.setState({
+          repos: result
+        });
+      }
+    })
   }
 
   render () {
